@@ -6,6 +6,9 @@ import com.portfoliobuilder.backend.entity.User;
 import com.portfoliobuilder.backend.repository.RoleRepository;
 import com.portfoliobuilder.backend.repository.UserRepository;
 
+import com.portfoliobuilder.backend.dto.LoginRequest;
+import com.portfoliobuilder.backend.util.JwtUtil;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +21,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public String register(RegisterRequest request) {
 
@@ -48,4 +52,19 @@ public class AuthService {
 
         return "User registered successfully";
     }
+    public String login(LoginRequest request) {
+
+    User user = userRepository
+            .findByEmail(request.getEmail())
+            .orElseThrow();
+
+    if (!passwordEncoder.matches(
+            request.getPassword(),
+            user.getPassword())) {
+
+        throw new RuntimeException("Invalid credentials");
+    }
+
+    return jwtUtil.generateToken(user.getEmail());
+}
 }
