@@ -2,36 +2,28 @@ package com.portfoliobuilder.backend.controller;
 
 import com.portfoliobuilder.backend.dto.RegisterRequest;
 import com.portfoliobuilder.backend.service.AuthService;
-
-import jakarta.validation.Valid;
-
-import lombok.RequiredArgsConstructor;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.portfoliobuilder.backend.dto.LoginRequest;
-import com.portfoliobuilder.backend.dto.LoginResponse;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
+@CrossOrigin("*")
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/register")
-    public String register(
-            @Valid @RequestBody RegisterRequest request) {
-
-        return authService.register(request);
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
-    @PostMapping("/login")
-public LoginResponse login(
-        @RequestBody LoginRequest request) {
+    @PostMapping("/register")
+    public ResponseEntity<String> register(
+            @RequestBody RegisterRequest request
+    ) {
+        return ResponseEntity.ok(
+                authService.register(request)
+        );
+    }
 
-    String token = authService.login(request);
-
-    return new LoginResponse(token);
-}
+    // Login API will be added later
 }
