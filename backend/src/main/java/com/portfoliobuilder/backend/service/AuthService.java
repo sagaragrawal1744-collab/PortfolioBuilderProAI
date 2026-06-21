@@ -1,5 +1,7 @@
 package com.portfoliobuilder.backend.service;
 
+import com.portfoliobuilder.backend.dto.LoginRequest;
+import com.portfoliobuilder.backend.dto.LoginResponse;
 import com.portfoliobuilder.backend.dto.RegisterRequest;
 import com.portfoliobuilder.backend.entity.Role;
 import com.portfoliobuilder.backend.entity.User;
@@ -14,15 +16,18 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public AuthService(
             UserRepository userRepository,
             RoleRepository roleRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService
     ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public String register(RegisterRequest request) {
@@ -51,5 +56,29 @@ public class AuthService {
         userRepository.save(user);
 
         return "User Registered Successfully";
+    }
+
+    public LoginResponse login(LoginRequest request) {
+
+        User user = userRepository
+                .findByEmail(request.getEmail())
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword()
+        )) {
+            throw new RuntimeException("Invalid Password");
+        }
+
+        String token =
+                jwtService.generateToken(user.getEmail());
+
+        return new LoginResponse(
+                token,
+                user.getName(),
+                user.getEmail()
+        );
     }
 }

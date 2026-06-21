@@ -1,5 +1,7 @@
 package com.portfoliobuilder.backend.controller;
 
+import com.portfoliobuilder.backend.dto.LoginRequest;
+import com.portfoliobuilder.backend.dto.LoginResponse;
 import com.portfoliobuilder.backend.dto.RegisterRequest;
 import com.portfoliobuilder.backend.service.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +27,12 @@ public class AuthController {
         );
     }
 
-    // Login API will be added later
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @RequestBody LoginRequest request
+    ) {
+        return ResponseEntity.ok(
+                authService.login(request)
+        );
+    }
 }
