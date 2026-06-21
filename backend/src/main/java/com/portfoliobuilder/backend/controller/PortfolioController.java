@@ -1,29 +1,37 @@
 package com.portfoliobuilder.backend.controller;
 
-import com.portfoliobuilder.backend.dto.CreatePortfolioRequest;
-import com.portfoliobuilder.backend.entity.Portfolio;
+import com.portfoliobuilder.backend.dto.PortfolioRequest;
 import com.portfoliobuilder.backend.service.PortfolioService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/portfolio")
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
 
-    public PortfolioController(PortfolioService portfolioService) {
+    public PortfolioController(
+            PortfolioService portfolioService
+    ) {
         this.portfolioService = portfolioService;
     }
 
-    // Create Portfolio
-    @PostMapping("/create")
-    public ResponseEntity<Portfolio> createPortfolio(
-            @RequestBody CreatePortfolioRequest request) {
+    @PostMapping
+    public ResponseEntity<String> createPortfolio(
+            @RequestBody PortfolioRequest request,
+            Authentication authentication
+    ) {
 
-        Portfolio portfolio = portfolioService.createPortfolio(request);
+        String email = authentication.getName();
 
-        return ResponseEntity.ok(portfolio);
+        return ResponseEntity.ok(
+                portfolioService.createPortfolio(
+                        request,
+                        email
+                )
+        );
     }
 }
