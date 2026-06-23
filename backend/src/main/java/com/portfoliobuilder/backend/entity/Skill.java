@@ -1,5 +1,6 @@
 package com.portfoliobuilder.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class Skill {
 
     private Integer skillLevel;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
