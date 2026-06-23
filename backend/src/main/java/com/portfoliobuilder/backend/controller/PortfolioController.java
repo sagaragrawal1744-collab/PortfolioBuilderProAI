@@ -1,6 +1,7 @@
 package com.portfoliobuilder.backend.controller;
 
 import com.portfoliobuilder.backend.dto.PortfolioRequest;
+import com.portfoliobuilder.backend.entity.Portfolio;
 import com.portfoliobuilder.backend.service.PortfolioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,34 @@ public class PortfolioController {
 
         return ResponseEntity.ok(
                 portfolioService.createPortfolio(
+                        request,
+                        email
+                )
+        );
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<Portfolio> getMyPortfolio(
+            Authentication authentication
+    ) {
+
+        String email = authentication.getName();
+
+        return ResponseEntity.ok(
+                portfolioService.getMyPortfolio(email)
+        );
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updatePortfolio(
+            @RequestBody PortfolioRequest request,
+            Authentication authentication
+    ) {
+
+        String email = authentication.getName();
+
+        return ResponseEntity.ok(
+                portfolioService.updatePortfolio(
                         request,
                         email
                 )

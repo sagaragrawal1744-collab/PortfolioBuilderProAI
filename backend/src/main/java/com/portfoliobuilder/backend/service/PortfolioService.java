@@ -49,4 +49,44 @@ public class PortfolioService {
 
         return "Portfolio created successfully";
     }
+
+    public Portfolio getMyPortfolio(String email) {
+
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        return portfolioRepository
+                .findByUser(user)
+                .orElseThrow(() ->
+                        new RuntimeException("Portfolio not found"));
+    }
+
+    public String updatePortfolio(
+            PortfolioRequest request,
+            String email
+    ) {
+
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        Portfolio portfolio = portfolioRepository
+                .findByUser(user)
+                .orElseThrow(() ->
+                        new RuntimeException("Portfolio not found"));
+
+        portfolio.setProfession(request.getProfession());
+        portfolio.setBio(request.getBio());
+        portfolio.setLocation(request.getLocation());
+        portfolio.setGithubUrl(request.getGithubUrl());
+        portfolio.setLinkedinUrl(request.getLinkedinUrl());
+        portfolio.setPortfolioUrl(request.getPortfolioUrl());
+
+        portfolioRepository.save(portfolio);
+
+        return "Portfolio updated successfully";
+    }
 }
