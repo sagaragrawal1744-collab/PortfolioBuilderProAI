@@ -1,42 +1,66 @@
 package com.portfoliobuilder.backend.controller;
 
-import com.portfoliobuilder.backend.dto.ResumeRequest;
-import com.portfoliobuilder.backend.entity.Resume;
 import com.portfoliobuilder.backend.service.ResumeService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/resumes")
+@RequestMapping("/api/resume")
 @CrossOrigin("*")
 public class ResumeController {
 
     private final ResumeService resumeService;
 
-    public ResumeController(
-            ResumeService resumeService
-    ) {
+    public ResumeController(ResumeService resumeService) {
         this.resumeService = resumeService;
     }
 
-    @PostMapping("/{portfolioId}")
-    public Resume create(
-            @PathVariable Long portfolioId,
-            @RequestBody ResumeRequest request
-    ) {
-        return resumeService.createResume(
-                portfolioId,
-                request
-        );
-    }
-
-    @GetMapping("/{portfolioId}")
-    public List<Resume> getAll(
+    /**
+     * Download ATS Resume PDF
+     */
+    @GetMapping("/{portfolioId}/download")
+    public ResponseEntity<ByteArrayResource> downloadResume(
             @PathVariable Long portfolioId
     ) {
-        return resumeService.getByPortfolio(
-                portfolioId
-        );
+
+        byte[] pdf = resumeService.generateResume(portfolioId);
+
+        ByteArrayResource resource =
+                new ByteArrayResource(pdf);
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=resume.pdf"
+                )
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdf.length)
+                .body(resource);
+    }
+
+    /**
+     * Preview Resume in Browser
+     */
+    @GetMapping("/{portfolioId}/preview")
+    public ResponseEntity<ByteArrayResource> previewResume(
+            @PathVariable Long portfolioId
+    ) {
+
+        byte[] pdf = resumeService.generateResume(portfolioId);
+
+        ByteArrayResource resource =
+                new ByteArrayResource(pdf);
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=resume.pdf"
+                )
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(pdf.length)
+                .body(resource);
     }
 }

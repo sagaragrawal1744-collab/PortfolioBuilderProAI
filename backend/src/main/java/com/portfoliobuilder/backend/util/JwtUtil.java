@@ -2,7 +2,6 @@ package com.portfoliobuilder.backend.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,16 +27,26 @@ public class JwtUtil {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(
-                        new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey(),
-                        SignatureAlgorithm.HS256)
+                        new Date(
+                                System.currentTimeMillis()
+                                        + expiration
+                        )
+                )
+                .signWith(
+                        getSigningKey(),
+                        SignatureAlgorithm.HS256
+                )
                 .compact();
     }
 
-    public String extractEmail(String token) {
+    public String extractEmail(
+            String token
+    ) {
 
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(
+                        getSigningKey()
+                )
                 .build()
                 .parseClaimsJws(token)
                 .getBody()

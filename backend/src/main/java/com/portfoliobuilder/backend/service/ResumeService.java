@@ -48,6 +48,10 @@ public class ResumeService {
 
         return resumeRepository.save(resume);
     }
+    public byte[] generateResume(Long portfolioId) {
+    return "Resume generation coming soon..."
+            .getBytes();
+}
 
     public List<Resume> getByPortfolio(Long portfolioId) {
         return resumeRepository.findByPortfolioId(portfolioId);
