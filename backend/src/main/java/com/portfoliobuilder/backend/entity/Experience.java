@@ -1,12 +1,11 @@
 package com.portfoliobuilder.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Entity
-@Table(name = "experience")
+@Table(name = "experiences")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,17 +20,16 @@ public class Experience {
 
     private String position;
 
-    private String employmentType;
+    @Column(length = 2000)
+    private String description;
 
-    private LocalDate startDate;
+    private String startDate;
 
-    private LocalDate endDate;
+    private String endDate;
 
     private Boolean currentlyWorking;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;

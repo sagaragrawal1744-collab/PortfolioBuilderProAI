@@ -2,6 +2,7 @@ package com.portfoliobuilder.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import jakarta.persistence.OneToOne;
 
 import java.util.List;
 @Entity
@@ -31,6 +32,41 @@ public class Portfolio {
         orphanRemoval = true
 )
 private List<Skill> skills;
+
+@OneToMany(
+        mappedBy = "portfolio",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+)
+private List<Project> projects;
+
+@OneToMany(
+        mappedBy = "portfolio",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+)
+private List<Education> educations;
+
+@OneToMany(
+        mappedBy = "portfolio",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+)
+private List<Experience> experiences;
+
+@OneToMany(
+        mappedBy = "portfolio",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+)
+private List<Certification> certifications;
+
+@OneToOne(
+        mappedBy = "portfolio",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+)
+private SocialLink socialLink;
 
     @OneToOne
     @JoinColumn(name = "user_id")

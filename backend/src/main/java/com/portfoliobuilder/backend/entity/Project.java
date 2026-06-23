@@ -1,5 +1,6 @@
 package com.portfoliobuilder.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,17 +18,16 @@ public class Project {
 
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 2000)
     private String description;
 
     private String githubLink;
 
     private String liveLink;
 
-    private String techStack;
+    private String technologies;
 
-    private Boolean featured;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;

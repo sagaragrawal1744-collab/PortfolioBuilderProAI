@@ -1,9 +1,8 @@
 package com.portfoliobuilder.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "certifications")
@@ -17,14 +16,17 @@ public class Certification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String certificationName;
+    private String title;
 
-    private String issuingOrganization;
+    private String organization;
 
-    private LocalDate issueDate;
+    private String issueDate;
 
-    private String credentialUrl;
+    private String credentialId;
 
+    private String certificateUrl;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;

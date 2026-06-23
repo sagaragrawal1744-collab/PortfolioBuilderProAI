@@ -1,10 +1,11 @@
-    package com.portfoliobuilder.backend.entity;
+package com.portfoliobuilder.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "education")
+@Table(name = "educations")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,15 +16,19 @@ public class Education {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String institution;
     private String degree;
-    private String fieldOfStudy;
+
+    private String college;
+
+    private String university;
+
     private Integer startYear;
+
     private Integer endYear;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private Double cgpa;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;

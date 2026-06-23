@@ -1,5 +1,6 @@
 package com.portfoliobuilder.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,11 +16,20 @@ public class SocialLink {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String platform;
+    private String github;
 
-    private String url;
+    private String linkedin;
 
-    @ManyToOne
+    private String leetcode;
+
+    private String hackerrank;
+
+    private String portfolioWebsite;
+
+    private String twitter;
+
+    @JsonIgnore
+    @OneToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 }

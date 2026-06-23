@@ -1,6 +1,7 @@
 package com.portfoliobuilder.backend.repository;
 
 import com.portfoliobuilder.backend.entity.Experience;
+import com.portfoliobuilder.backend.entity.Portfolio;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -8,5 +9,7 @@ import java.util.List;
 public interface ExperienceRepository
         extends JpaRepository<Experience, Long> {
 
-    List<Experience> findByPortfolioId(Long portfolioId);
+    List<Experience> findByPortfolio(
+            Portfolio portfolio
+    );
 }
