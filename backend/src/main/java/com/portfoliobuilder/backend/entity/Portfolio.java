@@ -2,7 +2,6 @@ package com.portfoliobuilder.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import jakarta.persistence.OneToOne;
 
 import java.util.List;
 @Entity
@@ -67,6 +66,13 @@ private List<Certification> certifications;
         orphanRemoval = true
 )
 private SocialLink socialLink;
+
+@OneToMany(
+        mappedBy = "portfolio",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+)
+private List<Resume> resumes;
 
     @OneToOne
     @JoinColumn(name = "user_id")
