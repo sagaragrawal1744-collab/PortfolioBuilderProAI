@@ -89,4 +89,20 @@ public class PortfolioService {
 
         return "Portfolio updated successfully";
     }
+    public String deletePortfolio(String email) {
+
+    User user = userRepository
+            .findByEmail(email)
+            .orElseThrow(() ->
+                    new RuntimeException("User not found"));
+
+    Portfolio portfolio = portfolioRepository
+            .findByUser(user)
+            .orElseThrow(() ->
+                    new RuntimeException("Portfolio not found"));
+
+    portfolioRepository.delete(portfolio);
+
+    return "Portfolio deleted successfully";
+}
 }

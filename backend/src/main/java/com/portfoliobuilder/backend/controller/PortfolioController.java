@@ -63,4 +63,15 @@ public class PortfolioController {
                 )
         );
     }
+    @DeleteMapping
+public ResponseEntity<String> deletePortfolio(
+        Authentication authentication
+) {
+
+    String email = authentication.getName();
+
+    return ResponseEntity.ok(
+            portfolioService.deletePortfolio(email)
+    );
+}
 }
