@@ -1,15 +1,10 @@
 package com.portfoliobuilder.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
-@Table(name = "resume_templates")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Data
 public class ResumeTemplate {
 
     @Id
@@ -18,9 +13,7 @@ public class ResumeTemplate {
 
     private String name;
 
-    private String previewImage;
-
-    private String templateType;
+    private String thumbnail;
 
     private boolean premium;
 }

@@ -49,4 +49,6 @@ public class Resume {
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
+    @Column(name = "template_name")
+private String templateName;
 }

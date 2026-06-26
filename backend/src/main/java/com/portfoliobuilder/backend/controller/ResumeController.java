@@ -14,19 +14,24 @@ public class ResumeController {
 
     private final ResumeService resumeService;
 
-    public ResumeController(ResumeService resumeService) {
+    public ResumeController(
+            ResumeService resumeService
+    ) {
         this.resumeService = resumeService;
     }
 
-    /**
-     * Download ATS Resume PDF
-     */
-    @GetMapping("/{portfolioId}/download")
-    public ResponseEntity<ByteArrayResource> downloadResume(
-            @PathVariable Long portfolioId
-    ) {
-
-        byte[] pdf = resumeService.generateResume(portfolioId);
+ @GetMapping("/{portfolioId}/download")
+public ResponseEntity<ByteArrayResource>
+downloadResume(
+        @PathVariable Long portfolioId,
+        @RequestParam(defaultValue = "modern")
+        String template
+){
+byte[] pdf =
+        resumeService.generateResume(
+                portfolioId,
+                template
+        );
 
         ByteArrayResource resource =
                 new ByteArrayResource(pdf);
@@ -36,20 +41,27 @@ public class ResumeController {
                         HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=resume.pdf"
                 )
-                .contentType(MediaType.APPLICATION_PDF)
+                .contentType(
+                        MediaType.APPLICATION_PDF
+                )
                 .contentLength(pdf.length)
                 .body(resource);
     }
 
-    /**
-     * Preview Resume in Browser
-     */
     @GetMapping("/{portfolioId}/preview")
-    public ResponseEntity<ByteArrayResource> previewResume(
-            @PathVariable Long portfolioId
-    ) {
+public ResponseEntity<ByteArrayResource>
+previewResume(
+        @PathVariable Long portfolioId,
+        @RequestParam(defaultValue = "modern")
+        String template
+){
 
-        byte[] pdf = resumeService.generateResume(portfolioId);
+        byte[] pdf =
+        resumeService.generateResume(
+                portfolioId,
+                template
+
+        );
 
         ByteArrayResource resource =
                 new ByteArrayResource(pdf);
@@ -59,7 +71,9 @@ public class ResumeController {
                         HttpHeaders.CONTENT_DISPOSITION,
                         "inline; filename=resume.pdf"
                 )
-                .contentType(MediaType.APPLICATION_PDF)
+                .contentType(
+                        MediaType.APPLICATION_PDF
+                )
                 .contentLength(pdf.length)
                 .body(resource);
     }
